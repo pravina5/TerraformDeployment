@@ -7,6 +7,16 @@ provider "aws" {
 locals {
   aws_key = "SWEN_Key_Pair"   # SSH key pair name
 }
+# Configure the Terraform backend to use S3 for state storage
+terraform {
+  backend "s3" {
+    bucket         = "terraformgitactions"  
+    key            = "terraform.tfstate"  
+    region         = "us-east-1"  
+    encrypt        = true  
+    dynamodb_table = "terraform-lock-table"  
+  }
+}
 
 # Security group for HTTP and SSH access
 resource "aws_security_group" "my_sg" {
